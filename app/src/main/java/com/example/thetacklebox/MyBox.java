@@ -91,7 +91,7 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
                 Collections.swap(DBList, oldPos, newPos);
 
                 rView.getAdapter().notifyItemMoved(oldPos,newPos);
-                
+
                  */
 
                 return false;
