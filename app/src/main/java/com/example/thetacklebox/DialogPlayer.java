@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
 
@@ -23,6 +24,11 @@ public class DialogPlayer extends AppCompatDialogFragment {
     private EditText editM;
     private EditText editDesc;
     private ExampleDialogListener myEXD;
+    public String title;
+
+    public String name1;
+    public int newPos;
+    public int newID;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -31,7 +37,27 @@ public class DialogPlayer extends AppCompatDialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.add_layout,null);
 
-        builder.setView(view).setTitle("Add new entry")
+        //title = "Add new entry";
+
+        newTitle(title);
+
+        editN = view.findViewById(R.id.name);
+        editT = view.findViewById(R.id.type);
+        editC = view.findViewById(R.id.color);
+        editNC = view.findViewById(R.id.numCol);
+        editW = view.findViewById(R.id.weight);
+        editL = view.findViewById(R.id.length);
+        editD = view.findViewById(R.id.depth);
+        editDesc = view.findViewById(R.id.desc);
+        editM = view.findViewById(R.id.model);
+
+
+
+
+        editN.setText(name1);
+
+
+        builder.setView(view).setTitle(title)
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -41,6 +67,8 @@ public class DialogPlayer extends AppCompatDialogFragment {
                 .setPositiveButton("Enter", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
+                        //Toast. makeText(this, "" + name1, Toast. LENGTH_SHORT).show();
 
                         String name = editN.getText().toString();
                         String type = editT.getText().toString();
@@ -57,15 +85,7 @@ public class DialogPlayer extends AppCompatDialogFragment {
                     }
                 });
 
-        editN = view.findViewById(R.id.name);
-        editT = view.findViewById(R.id.type);
-        editC = view.findViewById(R.id.color);
-        editNC = view.findViewById(R.id.numCol);
-        editW = view.findViewById(R.id.weight);
-        editL = view.findViewById(R.id.length);
-        editD = view.findViewById(R.id.depth);
-        editDesc = view.findViewById(R.id.desc);
-        editM = view.findViewById(R.id.model);
+
 
 
 
@@ -83,9 +103,34 @@ public class DialogPlayer extends AppCompatDialogFragment {
 
     }
 
+
     public interface ExampleDialogListener{
         void applyTexts(String name, String type, String color, String length, String numCol, String weight, String depth, String model, String desc);
 
+    }
+
+    public void newTitle(String newTitle){
+        title = newTitle;
+    }
+    public void setName(String newName){
+        //editN.setText(newName);
+        name1 = newName;
+    }
+    public void setPos(int pos){
+        //editN.setText(newName);
+        newPos = pos;
+    }
+    public void setID(int pos){
+        //editN.setText(newName);
+        newID = pos;
+    }
+    public int getPos2(){return  newPos;}
+    public int getID2(){return  newID;}
+    public String getName(){
+        return name1;
+    }
+    public String getTitle(){
+        return title;
     }
 
 }

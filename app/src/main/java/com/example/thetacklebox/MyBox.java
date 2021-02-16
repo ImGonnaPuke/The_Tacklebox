@@ -1,6 +1,8 @@
 package com.example.thetacklebox;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,9 +15,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDialogListener{
 
@@ -28,6 +32,7 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
     private SQLiteDatabase myRDB;
     public TackleboxDB myDBHelper;
     public ArrayList<Items> DBList;
+    public DialogPlayer dialog;
 
     //custom lure grabs
     public String nameNEW;
@@ -43,6 +48,8 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
         myWDB = tBox.getWritableDatabase();
         myRDB = tBox.getReadableDatabase();
         myDBHelper = new TackleboxDB(this);
+
+        dialog = new DialogPlayer();
 
         //testDB();
         DBList = myDBHelper.getAll();
@@ -71,7 +78,43 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
         });
 
 
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END ,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT ) {
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+
+                /*
+                int oldPos = viewHolder.getAdapterPosition();
+                int newPos = target.getAdapterPosition();
+
+                Collections.swap(DBList, oldPos, newPos);
+
+                rView.getAdapter().notifyItemMoved(oldPos,newPos);
+                
+                 */
+
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                delItem(viewHolder.getLayoutPosition());
+                Toast.makeText(MyBox.this, "" + viewHolder.getOldPosition(), Toast.LENGTH_SHORT).show();
+            }
+        }).attachToRecyclerView(rView);
+
+
+
+
+
     }
+
+
+
+
+
+
 
     public void genList(){
         lureList = new ArrayList<>();
@@ -84,7 +127,7 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
 
     public void delItem(int position){
         if(DBList.size()>1){
-            myDBHelper.deleteFromDB(DBList.get(position).getName());
+            myDBHelper.deleteFromDB(DBList.get(position).getID());
             DBList.remove(position);
         }
         else{
@@ -92,6 +135,7 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
         }
         buildRecycle();
     }
+
 
     public void showItem (int position) {
 
@@ -149,6 +193,9 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
             @Override
             public void onItemClick(int position) {
                 showItem(position);
+                //delItem(position);
+                Toast.makeText(getApplicationContext(), "cocke and blals " + position, Toast. LENGTH_SHORT).show();
+                //openEdit(position);
             }
 
         });
@@ -156,8 +203,9 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
         mAdapter.setOnItemLongClickListener(new LureAdaptor.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(int position) {
-                Toast.makeText(getApplicationContext(), "cocke and blals " + DBList.get(position).getName(), Toast. LENGTH_SHORT).show();
-                delItem(position);
+                Toast.makeText(getApplicationContext(), "cocke and blals " + DBList.get(position).getID(), Toast. LENGTH_SHORT).show();
+                openEdit(position);
+                //delItem(position);
             }
         });
 
@@ -186,10 +234,42 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
 
 
     public void openNew(){
-        DialogPlayer dialog = new DialogPlayer();
+        //DialogPlayer dialog = new DialogPlayer();
+        dialog.newTitle("Add new entry");
+        dialog.setName("Name");
+        Toast. makeText(getApplicationContext(), ""+ dialog.getName(), Toast. LENGTH_SHORT).show();
         dialog.show( MyBox.this.getSupportFragmentManager(), "test");
 
     };
+    public void openEdit(int position){
+        //DialogPlayer dialog = new DialogPlayer();
+        dialog.newTitle("Edit an entry");
+        dialog.setName(DBList.get(position).getName());
+        dialog.setPos(position);
+        dialog.setID(DBList.get(position).getID());
+        Toast. makeText(getApplicationContext(), ""+ dialog.getName(), Toast. LENGTH_SHORT).show();
+        dialog.show( MyBox.this.getSupportFragmentManager(), "test");
+
+        //currently updates on open, leading to no change
+        //updateItem(position);
+    };
+
+    public void updateItem(int position){
+
+        //GRABS CURRENT, UPDATED IS LOST IN THE VOID AHHHH
+        myDBHelper.onUpdate(DBList.get(position).getName(), DBList.get(position).getType(), DBList.get(position).getColor(), DBList.get(position).getLength(), DBList.get(position).getNumColor(),
+                DBList.get(position).getWeight(), DBList.get(position).getDepth(), DBList.get(position).getModel(), DBList.get(position).getDesc(),
+                DBList.get(position).getID(), DBList.get(position).getImg() );
+        //DBList.remove(position);
+
+
+        //Toast.makeText(getApplicationContext(), "List is updated!!", Toast. LENGTH_SHORT).show();
+
+        DBList = myDBHelper.getAll();
+        buildRecycle();
+    }
+
+
     @Override
     public void applyTexts(String name, String type, String color, String length, String numCol, String weight, String depth, String model, String desc){
 
@@ -205,15 +285,43 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
         cv.put(LureTemplate.LureItems.COLUMN_LENGTH, length);
         cv.put(LureTemplate.LureItems.COLUMN_WEIGHT, weight);
         cv.put(LureTemplate.LureItems.COLUMN_MODEL, model);
+        //cv.put(LureTemplate.LureItems._ID, id);
         cv.put(LureTemplate.LureItems.COLUMN_IMG, R.drawable.ic_launcher_background);
 
-        myWDB.insert(LureTemplate.LureItems.TABLE_NAME,null,cv);
+        //this is why onUpdate updates ID
+
+        //DialogPlayer dialog = new DialogPlayer();
+        String title = dialog.getTitle();
+        int tempPos = dialog.getPos2();
+        int tempID = dialog.getID2();
+
+        if(title.equals("Add new entry")) {
+            myWDB.insert(LureTemplate.LureItems.TABLE_NAME, null, cv);
+        }
+        else{
+            updateItem2(name, type, color, length, numCol, weight, depth, model, desc, tempID, R.drawable.ic_launcher_background);
+            Toast. makeText(getApplicationContext(), "Editing " + tempID, Toast. LENGTH_SHORT).show();
+        }
 
         DBList = myDBHelper.getAll();
         buildRecycle();
 
 
     }
+
+    public void updateItem2(String name, String type, String color, String length, String numCol, String weight, String depth, String model, String desc, int id, int img){
+
+        //IT WERKSSSSS
+        myDBHelper.onUpdate(name, type, color, length, numCol, weight, depth, model, desc, id, img);
+        //DBList.remove(position);
+
+
+        //Toast.makeText(getApplicationContext(), "List is updated!!", Toast. LENGTH_SHORT).show();
+
+        DBList = myDBHelper.getAll();
+        buildRecycle();
+    }
+
 
 /*
     @Override

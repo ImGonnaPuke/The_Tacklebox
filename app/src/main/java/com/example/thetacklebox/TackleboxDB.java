@@ -1,6 +1,7 @@
 package com.example.thetacklebox;
 
 import android.content.ClipData;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -26,17 +27,19 @@ public class TackleboxDB extends SQLiteOpenHelper {
 
         final String SQL_CREATE_LURE_TABLE = "CREATE TABLE " +
                 LureItems.TABLE_NAME + " (" +
-                //LureItems._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ //0
-                LureItems.COLUMN_NAME + " TEXT NOT NULL, " + //1
-                LureItems.COLUMN_TYPE + " TEXT NOT NULL, " + //2
-                LureItems.COLUMN_COLOR + " TEXT NOT NULL, " + //3
-                LureItems.COLUMN_LENGTH + " TEXT NOT NULL, " + //4
-                LureItems.COLUMN_NUM_COLOR + " TEXT NOT NULL, " + //5
-                LureItems.COLUMN_DEPTH + " TEXT NOT NULL, " + //6
-                LureItems.COLUMN_WEIGHT + " TEXT NOT NULL, " + //7
-                LureItems.COLUMN_MODEL + " TEXT NOT NULL, " + //8
-                LureItems.COLUMN_DESC + " TEXT NOT NULL, " + //9
-                LureItems.COLUMN_IMG + " INTEGER NOT NULL" + ");"; //10
+                LureItems.COLUMN_NAME + " TEXT NOT NULL, " + //0
+                LureItems.COLUMN_TYPE + " TEXT NOT NULL, " + //1
+                LureItems.COLUMN_COLOR + " TEXT NOT NULL, " + //2
+                LureItems.COLUMN_LENGTH + " TEXT NOT NULL, " + //3
+                LureItems.COLUMN_NUM_COLOR + " TEXT NOT NULL, " + //4
+                LureItems.COLUMN_DEPTH + " TEXT NOT NULL, " + //5
+                LureItems.COLUMN_WEIGHT + " TEXT NOT NULL, " + //6
+                LureItems.COLUMN_MODEL + " TEXT NOT NULL, " + //7
+                LureItems.COLUMN_DESC + " TEXT NOT NULL, " + //8
+                LureItems.COLUMN_IMG + " INTEGER NOT NULL, " + //9
+                LureItems._ID + " INTEGER PRIMARY KEY AUTOINCREMENT"+ ");"; //10
+
+        //LureItems._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ //0
 
         sqLiteDatabase.execSQL(SQL_CREATE_LURE_TABLE);
     }
@@ -71,8 +74,9 @@ public class TackleboxDB extends SQLiteOpenHelper {
                 String model = cursor.getString(7);
                 String desc = cursor.getString(8);
                 int img = cursor.getInt(9);
+                int id = cursor.getInt(10);
 
-                finalList.add(new Items(img, name, type, color, length, numCol, depth, weight, model, desc));
+                finalList.add(new Items(img, name, type, color, length, numCol, depth, weight, model, desc, id));
 
             }
             while(cursor.moveToNext());
@@ -86,12 +90,44 @@ public class TackleboxDB extends SQLiteOpenHelper {
         return finalList;
     }
 
-    public void deleteFromDB(String item){
+    public void deleteFromDB(int item){
 
         SQLiteDatabase delQuery = getWritableDatabase();
-        delQuery.execSQL(" DELETE FROM " + LureItems.TABLE_NAME + " WHERE " + LureItems.COLUMN_NAME + "=\"" + item + "\";");
+        delQuery.execSQL(" DELETE FROM " + LureItems.TABLE_NAME + " WHERE " + LureItems._ID + "=\"" + item + "\";");
 
 
+    }
+
+    public boolean onUpdate(String name, String type, String color, String length, String numCol, String weight, String depth, String model, String desc, int id, int img){
+
+        //nameNEW = name;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues cv = new ContentValues();
+        cv.put(LureItems.COLUMN_NAME, name);
+        cv.put(LureItems.COLUMN_TYPE, type);
+        cv.put(LureItems.COLUMN_COLOR, color);
+        cv.put(LureItems.COLUMN_NUM_COLOR, numCol);
+        cv.put(LureItems.COLUMN_DESC, desc);
+        cv.put(LureItems.COLUMN_DEPTH, depth);
+        cv.put(LureItems.COLUMN_LENGTH, length);
+        cv.put(LureItems.COLUMN_WEIGHT, weight);
+        cv.put(LureItems.COLUMN_MODEL, model);
+        cv.put(LureItems._ID, id);
+        cv.put(LureItems.COLUMN_IMG, img);
+
+        db.update(LureItems.TABLE_NAME, cv, "_ID = ?", new String[] {String.valueOf(id)});
+
+        return true;
+
+    }
+
+    public void resetDatabase() {
+        SQLiteDatabase database = getWritableDatabase();
+        database.execSQL("DROP TABLE IF EXISTS " +LureItems.TABLE_NAME);
+        //database.execSQL(SQL_CREATE_LURE_TABLE);
+        database.close();
     }
 
 }

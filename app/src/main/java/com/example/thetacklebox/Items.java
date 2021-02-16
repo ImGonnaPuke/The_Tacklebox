@@ -11,6 +11,7 @@ public class Items {
     private String weight;
     private String model;
     private String desc;
+    private int id_num;
 
 
     public Items(int resImg, String Name, String Type, String Color, String Len, String nCol, String Depth, String Weight, String Model,
@@ -25,6 +26,20 @@ public class Items {
         weight = Weight;
         model = Model;
         desc = Desc;
+    }
+    public Items(int resImg, String Name, String Type, String Color, String Len, String nCol, String Depth, String Weight, String Model,
+                 String Desc, int id){
+        img = resImg;
+        name = Name;
+        type = Type;
+        color = Color;
+        length = Len;
+        numColor = nCol;
+        depth = Depth;
+        weight = Weight;
+        model = Model;
+        desc = Desc;
+        id_num = id;
     }
 
 
@@ -56,6 +71,9 @@ public class Items {
     }
     public String getDesc(){
         return desc;
+    }
+    public int getID(){
+        return id_num;
     }
 
 }
