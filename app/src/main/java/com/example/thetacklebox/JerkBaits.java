@@ -100,6 +100,10 @@ public class JerkBaits extends AppCompatActivity {
             public void onItemClick(int position) {
                 showItem(position);
             }
+            @Override
+            public void onEditClick(int position){
+                //openEdit(position);
+            }
         });
 
 

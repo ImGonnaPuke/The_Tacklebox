@@ -120,6 +120,7 @@ public class TackleboxDB extends SQLiteOpenHelper {
         db.update(LureItems.TABLE_NAME, cv, "_ID = ?", new String[] {String.valueOf(id)});
 
         return true;
+        //db.close();
 
     }
 

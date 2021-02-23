@@ -28,6 +28,7 @@ public class LureAdaptor extends RecyclerView.Adapter<LureAdaptor.MyViewHolder> 
 
     public interface OnItemClickListener{
         void onItemClick(int position);
+        void onEditClick(int position);
     }
 
     public void setOnItemClickListener (LureAdaptor.OnItemClickListener listener){
@@ -91,7 +92,7 @@ public class LureAdaptor extends RecyclerView.Adapter<LureAdaptor.MyViewHolder> 
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView myName, myType, myColor, myNumColor, myLength, myDepth, myWeight, myModel;
-        ImageView myImage;
+        public ImageView myImage;
 
         public MyViewHolder(@NonNull View itemView, final LureAdaptor.OnItemClickListener listener, final LureAdaptor.OnItemLongClickListener listener2) {
             super(itemView);
@@ -112,6 +113,19 @@ public class LureAdaptor extends RecyclerView.Adapter<LureAdaptor.MyViewHolder> 
                         int position = getAdapterPosition();
                         if(position != RecyclerView.NO_POSITION){
                             listener.onItemClick(position);
+                            //listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
+
+            myImage.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    if(listener != null){
+                        int position = getAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION){
+                            listener.onEditClick(position);
                             //listener.onItemClick(position);
                         }
                     }

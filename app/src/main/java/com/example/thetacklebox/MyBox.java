@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -43,6 +44,7 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_box);
+
 
         TackleboxDB tBox = new TackleboxDB(this);
         myWDB = tBox.getWritableDatabase();
@@ -84,15 +86,16 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
 
-                /*
+
                 int oldPos = viewHolder.getAdapterPosition();
                 int newPos = target.getAdapterPosition();
 
                 Collections.swap(DBList, oldPos, newPos);
+                //Collections.swap(List)
 
                 rView.getAdapter().notifyItemMoved(oldPos,newPos);
 
-                 */
+
 
                 return false;
             }
@@ -110,20 +113,6 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
 
     }
 
-
-
-
-
-
-
-    public void genList(){
-        lureList = new ArrayList<>();
-
-        lureList.add(new Items(R.drawable.ic_launcher_background, "Epic Lure", "Pog", "Purple", "350in", "5",
-                "400mi", "420 tons", "21", "Fake and gay"));
-
-
-    }
 
     public void delItem(int position){
         if(DBList.size()>1){
@@ -192,10 +181,15 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
         mAdapter.setOnItemClickListener(new LureAdaptor.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                showItem(position);
+                //showItem(position);
                 //delItem(position);
-                Toast.makeText(getApplicationContext(), "cocke and blals " + position, Toast. LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "short " + position, Toast. LENGTH_SHORT).show();
                 //openEdit(position);
+            }
+            @Override
+            public void onEditClick(int position){
+                openEdit(position);
+                Toast.makeText(getApplicationContext(), "cocke and blals " + DBList.get(position).getID(), Toast. LENGTH_SHORT).show();
             }
 
         });
@@ -203,8 +197,8 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
         mAdapter.setOnItemLongClickListener(new LureAdaptor.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(int position) {
-                Toast.makeText(getApplicationContext(), "cocke and blals " + DBList.get(position).getID(), Toast. LENGTH_SHORT).show();
-                openEdit(position);
+                Toast.makeText(getApplicationContext(), "long" + DBList.get(position).getID(), Toast. LENGTH_SHORT).show();
+                //openEdit(position);
                 //delItem(position);
             }
         });
@@ -250,13 +244,13 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
         Toast. makeText(getApplicationContext(), ""+ dialog.getName(), Toast. LENGTH_SHORT).show();
         dialog.show( MyBox.this.getSupportFragmentManager(), "test");
 
-        //currently updates on open, leading to no change
         //updateItem(position);
     };
 
     public void updateItem(int position){
 
-        //GRABS CURRENT, UPDATED IS LOST IN THE VOID AHHHH
+        //start here for swap??
+
         myDBHelper.onUpdate(DBList.get(position).getName(), DBList.get(position).getType(), DBList.get(position).getColor(), DBList.get(position).getLength(), DBList.get(position).getNumColor(),
                 DBList.get(position).getWeight(), DBList.get(position).getDepth(), DBList.get(position).getModel(), DBList.get(position).getDesc(),
                 DBList.get(position).getID(), DBList.get(position).getImg() );
@@ -271,7 +265,8 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
 
 
     @Override
-    public void applyTexts(String name, String type, String color, String length, String numCol, String weight, String depth, String model, String desc){
+    public void applyTexts(String name, String type, String color, String length, String numCol, String weight,
+                           String depth, String model, String desc, int img){
 
         //nameNEW = name;
 
@@ -286,7 +281,7 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
         cv.put(LureTemplate.LureItems.COLUMN_WEIGHT, weight);
         cv.put(LureTemplate.LureItems.COLUMN_MODEL, model);
         //cv.put(LureTemplate.LureItems._ID, id);
-        cv.put(LureTemplate.LureItems.COLUMN_IMG, R.drawable.ic_launcher_background);
+        cv.put(LureTemplate.LureItems.COLUMN_IMG, img);
 
         //this is why onUpdate updates ID
 
@@ -299,7 +294,7 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
             myWDB.insert(LureTemplate.LureItems.TABLE_NAME, null, cv);
         }
         else{
-            updateItem2(name, type, color, length, numCol, weight, depth, model, desc, tempID, R.drawable.ic_launcher_background);
+            updateItem2(name, type, color, length, numCol, weight, depth, model, desc, tempID, img);
             Toast. makeText(getApplicationContext(), "Editing " + tempID, Toast. LENGTH_SHORT).show();
         }
 

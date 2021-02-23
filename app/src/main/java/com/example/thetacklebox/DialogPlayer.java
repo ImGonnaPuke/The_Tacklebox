@@ -7,10 +7,15 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
+
+import java.lang.reflect.Field;
 
 public class DialogPlayer extends AppCompatDialogFragment {
 
@@ -24,11 +29,15 @@ public class DialogPlayer extends AppCompatDialogFragment {
     private EditText editM;
     private EditText editDesc;
     private ExampleDialogListener myEXD;
+    private Spinner spin;
     public String title;
 
     public String name1;
     public int newPos;
     public int newID;
+    public int[] resArray;
+    public String[] drawName;
+    public int spinPos;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -50,11 +59,39 @@ public class DialogPlayer extends AppCompatDialogFragment {
         editD = view.findViewById(R.id.depth);
         editDesc = view.findViewById(R.id.desc);
         editM = view.findViewById(R.id.model);
+        spin = view.findViewById(R.id.spinner);
 
+        Field[] ID_Fields = R.drawable.class.getFields();
+        resArray = new int[resNum()];
+        drawName = new String[resNum()];
 
+        int k=0;
+        for(int i = 0; i < ID_Fields.length; i++) {
+            try {
+                //System.out.println("nigger "+ID_Fields[i].getName());
+                if(ID_Fields[i].getName().contains("image")) {
+                    resArray[k] = ID_Fields[i].getInt(null);
+                    drawName[k] = ID_Fields[i].getName();
+                    System.out.println("shit "+ID_Fields[i].getName());
+                    k++;
+                }
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
 
+        //ArrayAdapter<CharSequence> adapt = ArrayAdapter.createFromResource(getContext(), R.array.test, android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapt = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, drawName);
+        adapt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spin.setAdapter(adapt);
 
-        editN.setText(name1);
+        String spinName = spin.getSelectedItem().toString();
+        //spinPos = spin.getSelectedItemPosition();
+
+        //Toast.makeText(getActivity(), "" + ass2, Toast. LENGTH_SHORT).show();
+
+        //editN.setText(ass2);
 
 
         builder.setView(view).setTitle(title)
@@ -79,8 +116,10 @@ public class DialogPlayer extends AppCompatDialogFragment {
                         String depth = editD.getText().toString();
                         String model = editM.getText().toString();
                         String desc = editDesc.getText().toString();
+                        spinPos = spin.getSelectedItemPosition();
+                        int img = resArray[spinPos];
 
-                        myEXD.applyTexts(name, type, color, length, numCol, weight, depth, model, desc);
+                        myEXD.applyTexts(name, type, color, length, numCol, weight, depth, model, desc, img);
 
                     }
                 });
@@ -105,7 +144,8 @@ public class DialogPlayer extends AppCompatDialogFragment {
 
 
     public interface ExampleDialogListener{
-        void applyTexts(String name, String type, String color, String length, String numCol, String weight, String depth, String model, String desc);
+        void applyTexts(String name, String type, String color, String length, String numCol, String weight, String depth,
+                        String model, String desc, int img);
 
     }
 
@@ -132,5 +172,29 @@ public class DialogPlayer extends AppCompatDialogFragment {
     public String getTitle(){
         return title;
     }
+
+    public int resNum(){
+        int k =0;
+        Field[] ID_Fields = R.drawable.class.getFields();
+        for(int i = 0; i < ID_Fields.length; i++) {
+            try {
+                //System.out.println("nigger "+ID_Fields[i].getName());
+                if(ID_Fields[i].getName().contains("image")) {
+                    //resArray[k] = ID_Fields[i].getInt(null);
+                    //drawName[k] = ID_Fields[i].getName();
+                    System.out.println("shit "+ID_Fields[i].getName());
+                    k++;
+                }
+            } catch (IllegalArgumentException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return k;
+    }
+
+
+
+
 
 }

@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Field;
+
 public class MainLure extends AppCompatActivity {
 
     private ImageView imgV;
@@ -19,6 +21,7 @@ public class MainLure extends AppCompatActivity {
     private TextView depth;
     private TextView model;
     private TextView type;
+    public int[] resArray;
 
 
     @Override
@@ -27,6 +30,24 @@ public class MainLure extends AppCompatActivity {
         setContentView(R.layout.activity_main_lure);
         Bundle extras = getIntent().getExtras();
 
+        Field[] ID_Fields = R.drawable.class.getFields();
+        resArray = new int[ID_Fields.length];
+        int k=0;
+        for(int i = 0; i < ID_Fields.length; i++) {
+            try {
+                //System.out.println("nigger "+ID_Fields[i].getName());
+                if(ID_Fields[i].getName().contains("image")) {
+                    resArray[k] = ID_Fields[i].getInt(null);
+                    System.out.println("shit "+ID_Fields[i].getName());
+                    k++;
+                }
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+        Toast. makeText(getApplicationContext(), " " + resArray[0], Toast. LENGTH_SHORT).show();
         imgV = (ImageView) findViewById(R.id.res_lure);
         name = (TextView) findViewById(R.id.res_name);
         weight = (TextView) findViewById(R.id.res_weight);
@@ -66,7 +87,7 @@ public class MainLure extends AppCompatActivity {
             weight.setText(weight.getText().toString()+lureW);
             model.setText(model.getText().toString()+lureM);
             desc.setText(desc.getText().toString()+lureDesc);
-            imgV.setImageResource(lureI);
+            imgV.setImageResource(resArray[0]);
             //Toast.makeText(getApplicationContext(), ""+ lureN, Toast. LENGTH_SHORT).show();
         }
         else{
