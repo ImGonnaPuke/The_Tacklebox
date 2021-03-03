@@ -70,7 +70,7 @@ public class AllLures extends AppCompatActivity {
         //Toast toast = Toast. makeText(getApplicationContext(), toToast + "", Toast. LENGTH_SHORT);
         //toast.show();
 
-        if(lureN.equals("Epic Lure")) {
+       // if(lureN.equals("Epic Lure")) {
             Intent intent = new Intent(getBaseContext(), MainLure.class);
             intent.putExtra("LURE_NAME", lureN);
             intent.putExtra("LURE_TYPE", lureT);
@@ -83,11 +83,13 @@ public class AllLures extends AppCompatActivity {
             intent.putExtra("LURE_DESC", lureDesc);
             intent.putExtra("LURE_IMG", lureI);
             startActivity(intent);
-        }
+        /*}
         else{
             Toast toast = Toast.makeText(getApplicationContext(), lureI + "", Toast. LENGTH_SHORT);
             toast.show();
         }
+
+         */
 
     }
 

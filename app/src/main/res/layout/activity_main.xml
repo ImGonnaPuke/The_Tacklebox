@@ -12,8 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:layout_marginTop="70dp"
-        android:background="@drawable/cat_"
+        android:background="@drawable/cat_butt"
         android:text=""
+        style="?android:attr/borderlessButtonStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
@@ -22,8 +23,9 @@
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:layout_marginTop="40dp"
-        android:background="@drawable/all_lures_"
+        android:background="@drawable/all_lures"
         android:text=""
+        style="?android:attr/borderlessButtonStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/jerk" />
 
@@ -32,8 +34,9 @@
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:layout_marginTop="40dp"
-        android:background="@drawable/box_"
+        android:background="@drawable/tackle_butt"
         android:text=""
+        style="?android:attr/borderlessButtonStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/all" />
 

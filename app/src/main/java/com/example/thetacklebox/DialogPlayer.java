@@ -33,6 +33,15 @@ public class DialogPlayer extends AppCompatDialogFragment {
     public String title;
 
     public String name1;
+    public String newType;
+    public String newColor;
+    public String newNumCol;
+    public String newLen;
+    public String newDep;
+    public String newWeight;
+    public String newMod;
+    public String newDes;
+
     public int newPos;
     public int newID;
     public int[] resArray;
@@ -60,6 +69,17 @@ public class DialogPlayer extends AppCompatDialogFragment {
         editDesc = view.findViewById(R.id.desc);
         editM = view.findViewById(R.id.model);
         spin = view.findViewById(R.id.spinner);
+
+        editN.setText(getName());
+        editT.setText(getType());
+        editC.setText(getColor());
+        editNC.setText(getNCol());
+        editW.setText(getWeight());
+        editL.setText(getLen());
+        editD.setText(getDep());
+        editDesc.setText(getDes());
+        editM.setText(getMod());
+
 
         Field[] ID_Fields = R.drawable.class.getFields();
         resArray = new int[resNum()];
@@ -164,14 +184,62 @@ public class DialogPlayer extends AppCompatDialogFragment {
         //editN.setText(newName);
         newID = pos;
     }
+    public void setType(String pos){
+        newType = pos;
+    }
+    public void setColor(String pos){
+        newColor = pos;
+    }
+    public void setNumColor(String pos){
+        newNumCol = pos;
+    }
+    public void setLength(String pos){
+        newLen = pos;
+    }
+    public void setWeight(String pos){
+        newWeight = pos;
+    }
+    public void setDepth(String pos){
+        newDep = pos;
+    }
+    public void setModel(String pos){
+        newMod = pos;
+    }
+    public void setDesc(String pos){
+        newDes = pos;
+    }
+
     public int getPos2(){return  newPos;}
     public int getID2(){return  newID;}
-    public String getName(){
-        return name1;
-    }
     public String getTitle(){
         return title;
     }
+
+    public String getName(){
+        return name1;
+    }
+    public String getType(){
+        return newType;
+    }
+    public String getColor(){
+        return newColor;
+    }
+    public String getNCol(){
+        return newNumCol;
+    }
+    public String getLen(){
+        return newLen;
+    }
+    public String getWeight(){ return newWeight; }
+    public String getDep(){
+        return newDep;
+    }
+    public String getMod(){ return newMod; }
+    public String getDes(){
+        return newDes;
+    }
+
+
 
     public int resNum(){
         int k =0;

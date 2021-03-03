@@ -10,88 +10,96 @@
     <Button
         android:id="@+id/jerk"
         android:layout_width="175dp"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="68dp"
-        android:background="#6EF4C2"
-        android:text="Jerkbait"
+        android:background="@drawable/jerkbait_butt"
+        android:text=""
+        style="?android:attr/borderlessButtonStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button
         android:id="@+id/crank"
         android:layout_width="175dp"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/crank"
+        android:background="@drawable/crank_butt"
         android:text=""
+        style="?android:attr/borderlessButtonStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/jerk" />
 
     <Button
         android:id="@+id/sPlast"
         android:layout_width="175dp"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/plastics"
+        android:background="@drawable/plast_butt"
         android:text=""
+        style="?android:attr/borderlessButtonStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/crank" />
 
     <Button
         android:id="@+id/swim"
         android:layout_width="175dp"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:background="#6EF4C2"
-        android:text="Swimbait"
+        android:background="@drawable/swim_butt"
+        android:text=""
+        style="?android:attr/borderlessButtonStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sPlast" />
 
     <Button
         android:id="@+id/buzz"
         android:layout_width="175dp"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginTop="68dp"
         android:layout_marginEnd="10dp"
-        android:background="@drawable/buzz_"
+        android:background="@drawable/buzz_butt"
         android:text=""
+        style="?android:attr/borderlessButtonStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button
         android:id="@+id/jig"
         android:layout_width="175dp"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:background="@drawable/image_jigs"
+        android:background="@drawable/jig_butt"
         android:text=""
+        style="?android:attr/borderlessButtonStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buzz" />
 
     <Button
         android:id="@+id/spin"
         android:layout_width="175dp"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:background="@drawable/spin"
+        android:background="@drawable/spin_butt"
         android:text=""
+        style="?android:attr/borderlessButtonStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/jig" />
 
     <Button
         android:id="@+id/tWater"
         android:layout_width="175dp"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:background="@drawable/image_twater"
+        android:background="@drawable/water_butt"
         android:text=""
+        style="?android:attr/borderlessButtonStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spin" />
 

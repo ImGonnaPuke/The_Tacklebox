@@ -34,9 +34,12 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:contentDescription="TODO"
+                android:maxWidth="100dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
 
                 />
 

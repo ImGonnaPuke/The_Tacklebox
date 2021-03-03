@@ -25,6 +25,9 @@ public class LureAdaptor extends RecyclerView.Adapter<LureAdaptor.MyViewHolder> 
     private LureAdaptor.OnItemLongClickListener mListener2;
     private ArrayList<Items> mExList;
     private ArrayList<Items> mExList2;
+    public static int searchType;
+
+
 
     public interface OnItemClickListener{
         void onItemClick(int position);
@@ -48,6 +51,10 @@ public class LureAdaptor extends RecyclerView.Adapter<LureAdaptor.MyViewHolder> 
 
         this.mExList = exList;
         mExList2= new ArrayList<>(exList);
+
+    }
+
+    public LureAdaptor(){
 
     }
 
@@ -190,6 +197,9 @@ public class LureAdaptor extends RecyclerView.Adapter<LureAdaptor.MyViewHolder> 
         protected FilterResults performFiltering(CharSequence charSequence) {
             ArrayList<Items> filteredList = new ArrayList<>();
 
+
+           int searchType2 = getSearch();
+
             if(charSequence == null|| charSequence.length() ==0){
                 filteredList.addAll(mExList2);
             }
@@ -197,9 +207,21 @@ public class LureAdaptor extends RecyclerView.Adapter<LureAdaptor.MyViewHolder> 
                 String filterPattern = charSequence.toString().toLowerCase().trim();
 
                 for (Items item: mExList2){
-                    if(item.getName().toLowerCase().contains(filterPattern)){
-                        filteredList.add(item);
+                    //change search results here
+                    if(searchType==1) {
+                        if (item.getName().toLowerCase().contains(filterPattern)) {
+                            filteredList.add(item);
+                            System.out.println("Look here! " + searchType2);
+                        }
                     }
+                    else{
+                        if (item.getType().toLowerCase().contains(filterPattern)) {
+                            filteredList.add(item);
+                            System.out.println("Look here! " + searchType2);
+                        }
+                    }
+
+
                 }
             }
 
@@ -215,5 +237,11 @@ public class LureAdaptor extends RecyclerView.Adapter<LureAdaptor.MyViewHolder> 
             notifyDataSetChanged();
         }
     };
+
+    public void setSearch(int type){ searchType = type; }
+    public int getSearch(){
+        return searchType;
+    }
+
 
 }

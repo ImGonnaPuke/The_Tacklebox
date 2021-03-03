@@ -13,9 +13,13 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import java.lang.reflect.Field;
@@ -34,6 +38,9 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
     public TackleboxDB myDBHelper;
     public ArrayList<Items> DBList;
     public DialogPlayer dialog;
+    public static LureAdaptor SearchHelper;
+    public int count;
+
 
     //custom lure grabs
     public String nameNEW;
@@ -44,6 +51,9 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_box);
+
+        SearchHelper = new LureAdaptor();
+        SearchHelper.setSearch(4);
 
 
         TackleboxDB tBox = new TackleboxDB(this);
@@ -69,10 +79,18 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
         }
 
 
+        count = 1;
         addB.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                //Toast. makeText(getApplicationContext(), "" + DBList.get(0).getName(), Toast. LENGTH_SHORT).show();
-                openNew();
+
+               // count = count+1;
+               // if(count>2){
+               //     count = 1;
+               // }
+
+
+                Toast. makeText(getApplicationContext(), "" + count + "" +SearchHelper.getSearch(), Toast. LENGTH_SHORT).show();
+                //openNew();
                 //testDB();
                 //delItem();
                 //Toast. makeText(getApplicationContext(), "" + nameNEW, Toast. LENGTH_SHORT).show();
@@ -86,16 +104,15 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
 
-
                 int oldPos = viewHolder.getAdapterPosition();
                 int newPos = target.getAdapterPosition();
 
                 Collections.swap(DBList, oldPos, newPos);
-                //Collections.swap(List)
+
 
                 rView.getAdapter().notifyItemMoved(oldPos,newPos);
 
-
+                updateItem(oldPos, newPos);
 
                 return false;
             }
@@ -238,7 +255,17 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
     public void openEdit(int position){
         //DialogPlayer dialog = new DialogPlayer();
         dialog.newTitle("Edit an entry");
+
         dialog.setName(DBList.get(position).getName());
+        dialog.setType(DBList.get(position).getType());
+        dialog.setColor(DBList.get(position).getColor());
+        dialog.setNumColor(DBList.get(position).getNumColor());
+        dialog.setLength(DBList.get(position).getLength());
+        dialog.setDepth(DBList.get(position).getDepth());
+        dialog.setWeight(DBList.get(position).getWeight());
+        dialog.setModel(DBList.get(position).getModel());
+        dialog.setDesc(DBList.get(position).getDesc());
+
         dialog.setPos(position);
         dialog.setID(DBList.get(position).getID());
         Toast. makeText(getApplicationContext(), ""+ dialog.getName(), Toast. LENGTH_SHORT).show();
@@ -247,20 +274,27 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
         //updateItem(position);
     };
 
-    public void updateItem(int position){
+    public void updateItem(int position, int position2){
 
         //start here for swap??
 
-        myDBHelper.onUpdate(DBList.get(position).getName(), DBList.get(position).getType(), DBList.get(position).getColor(), DBList.get(position).getLength(), DBList.get(position).getNumColor(),
+        //int tempID = DBList.get(position).getID();
+        //int tempID2 = DBList.get(position2).getID();
+
+        myDBHelper.onUpdate(DBList.get(position2).getName(), DBList.get(position).getType(), DBList.get(position).getColor(), DBList.get(position).getLength(), DBList.get(position).getNumColor(),
                 DBList.get(position).getWeight(), DBList.get(position).getDepth(), DBList.get(position).getModel(), DBList.get(position).getDesc(),
                 DBList.get(position).getID(), DBList.get(position).getImg() );
+
+        myDBHelper.onUpdate(DBList.get(position).getName(), DBList.get(position).getType(), DBList.get(position).getColor(), DBList.get(position).getLength(), DBList.get(position).getNumColor(),
+                DBList.get(position).getWeight(), DBList.get(position).getDepth(), DBList.get(position).getModel(), DBList.get(position).getDesc(),
+                DBList.get(position2).getID(), DBList.get(position).getImg() );
         //DBList.remove(position);
 
 
         //Toast.makeText(getApplicationContext(), "List is updated!!", Toast. LENGTH_SHORT).show();
 
         DBList = myDBHelper.getAll();
-        buildRecycle();
+        //buildRecycle();
     }
 
 
@@ -318,7 +352,7 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
     }
 
 
-/*
+
     @Override
     public boolean onCreateOptionsMenu (Menu menu){
         MenuInflater mInfalter = getMenuInflater();
@@ -342,5 +376,5 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
         return true;
     }
 
- */
+
 }
