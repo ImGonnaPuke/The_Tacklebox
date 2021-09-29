@@ -246,7 +246,7 @@ public class DialogPlayer extends AppCompatDialogFragment {
         Field[] ID_Fields = R.drawable.class.getFields();
         for(int i = 0; i < ID_Fields.length; i++) {
             try {
-                //System.out.println("nigger "+ID_Fields[i].getName());
+
                 if(ID_Fields[i].getName().contains("image")) {
                     //resArray[k] = ID_Fields[i].getInt(null);
                     //drawName[k] = ID_Fields[i].getName();

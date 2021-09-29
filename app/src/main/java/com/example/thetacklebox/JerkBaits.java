@@ -45,6 +45,7 @@ public class JerkBaits extends AppCompatActivity {
                 "400mi", "420 tons", "21", "Fake and gay"));
         lureList.add(new Items(R.drawable.ic_launcher_background, "Epic Lure 2", "Pog", "Purple", "350in", "5",
                 "400mi", "420 tons", "21", "Fake and gay"));
+        
 
 
     }

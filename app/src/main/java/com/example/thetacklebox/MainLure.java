@@ -35,10 +35,10 @@ public class MainLure extends AppCompatActivity {
         int k=0;
         for(int i = 0; i < ID_Fields.length; i++) {
             try {
-                //System.out.println("nigger "+ID_Fields[i].getName());
+
                 if(ID_Fields[i].getName().contains("image")) {
                     resArray[k] = ID_Fields[i].getInt(null);
-                    System.out.println("shit "+ID_Fields[i].getName());
+                    System.out.println("hi "+ID_Fields[i].getName());
                     k++;
                 }
             } catch (IllegalArgumentException | IllegalAccessException e) {
@@ -88,7 +88,7 @@ public class MainLure extends AppCompatActivity {
             model.setText(model.getText().toString()+lureM);
             desc.setText(desc.getText().toString()+lureDesc);
             imgV.setImageResource(resArray[0]);
-            //Toast.makeText(getApplicationContext(), ""+ lureN, Toast. LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), ""+ imgV, Toast. LENGTH_SHORT).show();
         }
         else{
             Toast toast = Toast.makeText(getApplicationContext(), "Failure", Toast. LENGTH_SHORT);

@@ -90,7 +90,7 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
 
 
                 Toast. makeText(getApplicationContext(), "" + count + "" +SearchHelper.getSearch(), Toast. LENGTH_SHORT).show();
-                //openNew();
+                openNew();
                 //testDB();
                 //delItem();
                 //Toast. makeText(getApplicationContext(), "" + nameNEW, Toast. LENGTH_SHORT).show();
@@ -120,7 +120,7 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 delItem(viewHolder.getLayoutPosition());
-                Toast.makeText(MyBox.this, "" + viewHolder.getOldPosition(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyBox.this, "swiped" + viewHolder.getOldPosition(), Toast.LENGTH_SHORT).show();
             }
         }).attachToRecyclerView(rView);
 
@@ -198,7 +198,7 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
         mAdapter.setOnItemClickListener(new LureAdaptor.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                //showItem(position);
+                showItem(position);
                 //delItem(position);
                 Toast.makeText(getApplicationContext(), "short " + position, Toast. LENGTH_SHORT).show();
                 //openEdit(position);
@@ -206,7 +206,7 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
             @Override
             public void onEditClick(int position){
                 openEdit(position);
-                Toast.makeText(getApplicationContext(), "cocke and blals " + DBList.get(position).getID(), Toast. LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "edit " + DBList.get(position).getID(), Toast. LENGTH_SHORT).show();
             }
 
         });
@@ -215,7 +215,7 @@ public class MyBox extends AppCompatActivity implements DialogPlayer.ExampleDial
             @Override
             public void onItemLongClick(int position) {
                 Toast.makeText(getApplicationContext(), "long" + DBList.get(position).getID(), Toast. LENGTH_SHORT).show();
-                //openEdit(position);
+                openEdit(position);
                 //delItem(position);
             }
         });
